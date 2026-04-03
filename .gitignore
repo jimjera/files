@@ -1,44 +1,10 @@
-```
-# Dependencies
-node_modules/
+# Infrastructure and deployment scripts
+wesza/infrastructure/*.sh
 
-# Build outputs
-dist/
-build/
-target/
+# Backup and deployment artifacts
+wesza/infrastructure/backup-*
+wesza/infrastructure/deploy-*
 
-# TypeScript/JavaScript
-*.tsbuildinfo
-*.js.map
-*.ts.map
-
-# Logs
-*.log
-
-# Environment variables
-.env
-.env.local
-.env.*
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# Python cache (if any Python files exist in project)
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-```
+# Documentation
+wesza/infrastructure/DEPLOYMENT_GUIDE.md
+wesza/infrastructure/QUICKSTART.md
