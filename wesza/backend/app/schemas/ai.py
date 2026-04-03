@@ -110,3 +110,16 @@ class IntentClassificationResponse(BaseModel):
     use_case: str = Field(..., description="Specific use case")
     modules: List[str] = Field(..., description="Recommended modules")
     confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score")
+
+
+class GenerateRequest(BaseModel):
+    """
+    Request schema for AI response generation using an app.
+    
+    Attributes:
+        app_id: UUID of the app to use for generation.
+        user_input: User's input message or query.
+    """
+    
+    app_id: str = Field(..., description="App UUID")
+    user_input: str = Field(..., min_length=1, max_length=4000, description="User's input message")
