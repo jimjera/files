@@ -1,0 +1,68 @@
+# Wesza Backend Docker Compose
+# For local development with Redis for Celery
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=development
+      - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@db:5432/wesza}
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_KEY=${SUPABASE_KEY:-}
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-prod}
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - SPACES_KEY=${SPACES_KEY:-}
+      - SPACES_SECRET=${SPACES_SECRET:-}
+      - SPACES_REGION=nyc3
+      - SPACES_BUCKET_NAME=wesza-apps
+      - SPACES_ENDPOINT=https://nyc3.digitaloceanspaces.com
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./app:/app/app
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - wesza-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - wesza-network
+
+  # Optional: Local PostgreSQL for development (comment out if using Supabase)
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wesza
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - wesza-network
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  wesza-network:
+    driver: bridge
