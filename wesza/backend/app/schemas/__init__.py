@@ -13,6 +13,12 @@ from app.schemas.app import (
     AppUpdate,
     AppListResponse,
 )
+from app.schemas.template import (
+    TemplateCreate,
+    TemplateResponse as TemplateSchemaResponse,
+    TemplateUpdate,
+    TemplateListResponse,
+)
 from app.schemas.ai import (
     PromptRequest,
     TemplateResponse,
@@ -32,6 +38,11 @@ __all__ = [
     "AppResponse",
     "AppUpdate",
     "AppListResponse",
+    # Template
+    "TemplateCreate",
+    "TemplateSchemaResponse",
+    "TemplateUpdate",
+    "TemplateListResponse",
     # AI
     "PromptRequest",
     "TemplateResponse",

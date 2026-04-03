@@ -319,3 +319,43 @@ Offline Sync: {config.get('offline_sync', True)}"""
         except json.JSONDecodeError as e:
             logger.error("Failed to parse code response", error=str(e))
             return None
+    
+    async def generate_response(
+        self,
+        app_config: Dict[str, Any],
+        user_input: str,
+    ) -> str:
+        """
+        Generate an AI response using the app's configuration and user input.
+        
+        Uses the appropriate model based on the task complexity.
+        
+        Args:
+            app_config: App configuration from config_json.
+            user_input: User's input message or query.
+            
+        Returns:
+            str: Generated AI response.
+        """
+        system_message = f"""You are a helpful AI assistant for a customer support chatbot.
+Company configuration: {app_config}
+
+Respond helpfully and professionally to the user's message.
+Keep responses concise and focused on helping the user."""
+
+        messages = [
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_input},
+        ]
+        
+        response = await self._make_request(
+            model=self.SIMPLE_CODE_MODEL,
+            messages=messages,
+        )
+        
+        if not response:
+            logger.error("AI response generation failed")
+            return "I'm sorry, I couldn't process your request at this time."
+        
+        logger.info("AI response generated", input_length=len(user_input))
+        return response

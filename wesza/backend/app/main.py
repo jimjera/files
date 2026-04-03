@@ -13,7 +13,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from app.config import settings
-from app.api.v1 import auth, apps, ai
+from app.api.v1 import auth, apps, ai, templates
 from app.database import init_db
 
 # Configure structured logging
@@ -69,6 +69,7 @@ def create_application() -> FastAPI:
     application.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
     application.include_router(apps.router, prefix="/api/v1/apps", tags=["Applications"])
     application.include_router(ai.router, prefix="/api/v1/ai", tags=["AI"])
+    application.include_router(templates.router, prefix="/api/v1/templates", tags=["Templates"])
 
     # Exception handlers
     @application.exception_handler(RequestValidationError)
